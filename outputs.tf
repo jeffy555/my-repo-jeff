@@ -1,9 +1,9 @@
 output "resource_group_name" {
-  value = azurerm_resource_group.my_resource_group.name
+  value = azurerm_resource_group.test_rg.name
 }
 
 output "acr_name" {
-  value = azurerm_container_registry.my_acr.name
+  value = azurerm_storage_account.test_sa.name
 }
 
 output "container_app_environment_id" {
@@ -11,5 +11,9 @@ output "container_app_environment_id" {
 }
 
 output "container_app_id" {
-  value = azurerm_container_app.my_container_app.id
+  value = azurerm_app_service.my_app_service.id
+}
+
+output "app_service_plan_id" {
+  value = azurerm_app_service_plan.my_app_service_plan.id
 }
