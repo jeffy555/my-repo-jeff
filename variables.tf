@@ -1,35 +1,34 @@
-variable "location" {
-  description = "Azure region"
+variable "resource_group_name" {
+  description = "The name of the resource group"
   type        = string
-  default     = "East US"
 }
 
-variable "container_app_env_name" {
-  description = "Name of the Container App Environment"
+variable "location" {
+  description = "The Azure location for the resources"
   type        = string
-  default     = "my-container-app-env"
+}
+
+variable "storage_account_name" {
+  description = "The name of the storage account"
+  type        = string
 }
 
 variable "app_service_plan_name" {
-  description = "Name of the App Service Plan"
+  description = "The name of the App Service Plan"
   type        = string
-  default     = "my-app-service-plan"
 }
 
-variable "app_service_name" {
-  description = "Name of the App Service"
+variable "function_app_name" {
+  description = "The name of the Function App"
   type        = string
-  default     = "my-linux-app-service"
 }
 
-variable "app_service_plan_tier" {
-  description = "Pricing tier for the App Service Plan"
+variable "runtime_stack" {
+  description = "The runtime stack for the Function App"
   type        = string
-  default     = "PremiumV2"
 }
 
-variable "app_service_plan_size" {
-  description = "Size for the App Service Plan"
+variable "functions_worker_runtime" {
+  description = "The worker runtime for Azure Functions"
   type        = string
-  default     = "P1v2"
 }
