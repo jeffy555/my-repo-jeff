@@ -9,7 +9,7 @@ This repository contains Terraform configuration files for managing cloud infras
 - `terraform.tfvars`
 - `outputs.tf`
 
-## Configuration
+## Configuration#
 
 - **Cloud Provider**: AZURE
 - **Module Approach**: Standalone Root Module (complete infrastructure)
