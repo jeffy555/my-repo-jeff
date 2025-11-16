@@ -1,7 +1,7 @@
+resource_group_name = "my-function-rg"
 location = "East US"
-
-container_app_env_name = "my-container-app-env"
-app_service_plan_name = "my-app-service-plan"
-app_service_name = "my-linux-app-service"
-app_service_plan_tier = "PremiumV2"
-app_service_plan_size = "P1v2"
+storage_account_name = "mystorageacct123"
+app_service_plan_name = "my-function-plan"
+function_app_name = "myfunctionapp"
+runtime_stack = "dotnet"
+functions_worker_runtime = "dotnet"
