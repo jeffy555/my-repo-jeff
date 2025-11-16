@@ -1,0 +1,7 @@
+resource_group_name = "my-function-rg"
+location = "East US"
+storage_account_name = "mystorageacct123"
+app_service_plan_name = "my-function-plan"
+function_app_name = "myfunctionapp"
+runtime_stack = "dotnet"
+functions_worker_runtime = "dotnet"
