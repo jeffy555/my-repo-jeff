@@ -32,3 +32,19 @@ variable "functions_worker_runtime" {
   description = "The worker runtime for Azure Functions"
   type        = string
 }
+
+variable "acr_name" {
+  description = "The name of the Azure Container Registry"
+  type        = string
+}
+
+variable "acr_sku" {
+  description = "The SKU of the Azure Container Registry"
+  type        = string
+  default     = "Basic"
+}
+
+variable "container_app_env_name" {
+  description = "The name of the Azure Container App Environment"
+  type        = string
+}
