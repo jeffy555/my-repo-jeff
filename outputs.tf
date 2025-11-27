@@ -17,3 +17,7 @@ output "container_app_id" {
 output "app_service_plan_id" {
   value = azurerm_app_service_plan.my_app_service_plan.id
 }
+
+output "logic_app_workflow_id" {
+  value = azurerm_logic_app_workflow.http_triggered_logic_app.id
+}
