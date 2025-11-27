@@ -9,3 +9,5 @@ functions_worker_runtime = "dotnet"
 acr_name           = "devacr123"
 acr_sku            = "Basic"
 container_app_env_name = "dev-container-app-env"
+
+geo_replication_location = "East US"
