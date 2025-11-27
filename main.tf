@@ -117,3 +117,13 @@ resource "azurerm_logic_app_workflow" "http_triggered_logic_app" {
     }
   })
 }
+
+resource "azurerm_storage_account" "new_storage_account" {
+  name                     = "uniqueaccountname123"
+  resource_group_name      = azurerm_resource_group.function_rg.name
+  location                 = azurerm_resource_group.function_rg.location
+  account_tier            = "Standard"
+  account_replication_type = "LRS"
+  min_tls_version         = "TLS1_2"
+  allow_blob_public_access = false
+}
