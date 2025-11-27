@@ -15,6 +15,19 @@ resource "azurerm_storage_account" "function_storage" {
   account_replication_type = "LRS"
   min_tls_version         = "TLS1_2" // Ensure the latest version of TLS encryption
   allow_blob_public_access = false    // Disallow public access
+
+  // Ensure logging is enabled for the queue service
+  logging {
+    delete                = true
+    read                  = true
+    write                 = true
+    retention_policy {
+      days = 7
+    }
+  }
+
+  // Ensure replication is enabled
+  account_replication_type = "LRS" // Already set, but confirming for clarity
 }
 
 resource "azurerm_app_service_plan" "function_plan" {
@@ -68,4 +81,39 @@ resource "azurerm_container_app_environment" "example" {
     external_enabled = true
     target_port      = 80
   }
+}
+
+resource "azurerm_logic_app_workflow" "http_triggered_logic_app" {
+  name                = "http-triggered-logic-app"
+  location            = azurerm_resource_group.function_rg.location
+  resource_group_name = azurerm_resource_group.function_rg.name
+
+  definition = jsonencode({
+    "$schema" = "http://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json"
+    "triggers" = {
+      "manual" = {
+        "type" = "Request"
+        "kind" = "Http"
+        "inputs" = {
+          "schema" = {
+            "type" = "object"
+            "properties" = {
+              "name" = { "type" = "string" }
+            }
+          }
+        }
+      }
+    }
+    "actions" = {
+      "response" = {
+        "type" = "Response"
+        "inputs" = {
+          "statusCode" = 200
+          "body" = {
+            "message" = "Hello, @{triggerBody()['name']}!"
+          }
+        }
+      }
+    }
+  })
 }
