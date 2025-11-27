@@ -48,3 +48,8 @@ variable "container_app_env_name" {
   description = "The name of the Azure Container App Environment"
   type        = string
 }
+
+variable "geo_replication_location" {
+  description = "The location for geo-replication"
+  type        = string
+}
