@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aks-cluster
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: aks-cluster
+data:
+  DATABASE_URL: "your-database-url"
+  STORAGE_ACCOUNT_NAME: "your-storage-account-name"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: azure-keyvault-secret
+  namespace: aks-cluster
+type: Opaque
+data:
+  secret-key: "base64-encoded-secret-value"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  namespace: aks-cluster
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app-container
+        image: <your-acr-name>.azurecr.io/my-app:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DATABASE_URL
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: azure-keyvault-secret
+              key: secret-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+  namespace: aks-cluster
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: my-app
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: app-monitor
+  namespace: aks-cluster
+spec:
+  selector:
+    matchLabels:
+      app: my-app
+  endpoints:
+  - port: http
+    interval: 30s
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage-claim
+  namespace: aks-cluster
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: azure-storage
+provisioner: kubernetes.io/azure-disk
+parameters:
+  kind: Managed
+  storageaccounttype: Standard_LRS
+---
+apiVersion: v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: aks-cluster
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: your-app.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app-service
+            port:
+              number: 80
